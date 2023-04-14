@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div style="background-color: #eee">
+      <section
+        style="display: flex; justify-content: center; align-items: center"
+      >
+        <div style="width: 100%; max-width: 640px; padding: 1.25rem 1rem">
+          <div style="background-color: white">
+            <main style="border-top: 8px solid red">
+              <div
+                style="
+                  background-color: rgba(17, 24, 39, 1);
+                  color: white;
+                  padding: 1.5rem 0;
+                  text-align: center;
+                "
+              >
+                <p style="text-transform: capitalize">
+                  ${transactionDetails?.bookedRoomsOption?.map( (hotelName) =>
+                  hotelName.hotelName )} hotel
+                </p>
+                <span>
+                  ${transactionDetails?.bookedRoomsOption?.map((hotelName) =>
+                  hotelName.hotelAddress.toUpperCase() )}
+                </span>
+              </div>
+              <div style="padding: 2.25rem 1.25rem 0">
+                <h3>
+                  Dear ${transactionDetails?.lastName} ${" "} ${
+                  transactionDetails?.firstName }
+                </h3>
+                <p>
+                  Your payment has been confirmed and the people at
+                  ${transactionDetails?.bookedRoomsOption?.map( (hotelName) =>
+                  hotelName.hotelName )} hotel will be delighted to have you
+                  from ${transactionDetails?.bookedRoomsOption?.map(
+                  (bookingDates) => ` ${format( new
+                  Date(bookingDates.bookingStartDate), "dd MMM yyyy" )} to
+                  ${format( new Date(bookingDates.bookingEndDate), "dd MMM yyyy"
+                  )} ` )} Thank you for choosing us.
+                </p>
+                <p>
+                  Enjoy and feel the difference with
+                  ${transactionDetails?.bookedRoomsOption?.map( (hotelName) =>
+                  hotelName.hotelName.charAt(0).toUpperCase() +
+                  hotelName.hotelName.slice(1) )} Hotel.
+                </p>
+                <p>
+                  Regards, <br />
+                  The WillTrip Team
+                </p>
+              </div>
+              <div style="padding: 2.25rem 1.25rem">
+                <h1
+                  style="
+                    color: rgb(17 24 39 1);
+                    text-transform: uppercase;
+                    font-weight: 600;
+                    font-size: 1.5rem;
+                    text-align: center;
+                    padding-bottom: 1.5rem;
+                  "
+                >
+                  Reservation summary
+                </h1>
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    Reservation Number:
+                  </p>
+                  <span style="text-transform: capitalize; font-size: 0.875rem">
+                    ${transactionDetails?.bookingNumber}
+                  </span>
+                </div>
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+                      flex: 1;
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    first name:
+                  </p>
+                  <span
+                    style="
+                      text-transform: capitalize;
+                      font-size: 0.875rem;
+                      flex: 2;
+                    "
+                  >
+                    ${transactionDetails?.firstName}
+                  </span>
+                </div>
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+                      flex: 1;
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    first name:
+                  </p>
+                  <span
+                    style="
+                      text-transform: capitalize;
+                      font-size: 0.875rem;
+                      flex: 2;
+                    "
+                  >
+                    ${transactionDetails?.lastName}
+                  </span>
+                </div>
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+                      flex: 1;
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    phone:
+                  </p>
+                  <span
+                    style="
+                      text-transform: capitalize;
+                      font-size: 0.875rem;
+                      flex: 2;
+                    "
+                  >
+                    ${transactionDetails?.mobileNumber}
+                  </span>
+                </div>
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+                      flex: 1;
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    email:
+                  </p>
+                  <span
+                    style="
+                      text-transform: capitalize;
+                      font-size: 0.875rem;
+                      flex: 2;
+                    "
+                  >
+                    ${transactionDetails?.email}
+                  </span>
+                </div>
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+                      flex: 1;
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    arrival date:
+                  </p>
+                  <span
+                    style="
+                      text-transform: capitalize;
+                      font-size: 0.875rem;
+                      flex: 2;
+                    "
+                  >
+                    ${transactionDetails?.arrivalTime}
+                  </span>
+                </div>
+                ${transactionDetails?.bookedRoomsOption?.map( (option, index) =>
+                `
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+                      flex: 1;
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    hotel name:
+                  </p>
+                  <span
+                    style="
+                      text-transform: capitalize;
+                      font-size: 0.875rem;
+                      flex: 2;
+                    "
+                  >
+                    ${option.hotelName}
+                  </span>
+                </div>
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+                      flex: 1;
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    hotel location:
+                  </p>
+                  <span
+                    style="
+                      text-transform: capitalize;
+                      font-size: 0.875rem;
+                      flex: 2;
+                    "
+                  >
+                    ${option.hotelLocation}
+                  </span>
+                </div>
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+                      flex: 1;
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    room title:
+                  </p>
+                  <span
+                    style="
+                      text-transform: capitalize;
+                      font-size: 0.875rem;
+                      flex: 2;
+                    "
+                  >
+                    ${option.roomTitle}
+                  </span>
+                </div>
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+                      flex: 1;
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    room feature:
+                  </p>
+                  <span
+                    style="
+                      text-transform: capitalize;
+                      font-size: 0.875rem;
+                      flex: 2;
+                    "
+                  >
+                    ${option.feature}
+                  </span>
+                </div>
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+                      flex: 1;
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    room price:
+                  </p>
+                  <span
+                    style="
+                      text-transform: capitalize;
+                      font-size: 0.875rem;
+                      flex: 2;
+                    "
+                  >
+                    ${ transactionDetails?.convertedPrice === "USD" ? "$" :
+                    transactionDetails?.convertedPrice === "EUR" ? "£" : "₦" }
+                    ${[option.roomPrice].toString().replace(/\B(?=(\d{3})+(?!\d))/g,
+                    ",")}
+                  </span>
+                </div>
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+                      flex: 1;
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    room number:
+                  </p>
+                  <span
+                    style="
+                      text-transform: capitalize;
+                      font-size: 0.875rem;
+                      flex: 2;
+                    "
+                  >
+                    ${option.roomNumber}
+                  </span>
+                </div>
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+                      flex: 1;
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    booking dates:
+                  </p>
+                  <span
+                    style="
+                      text-transform: capitalize;
+                      font-size: 0.875rem;
+                      flex: 2;
+                    "
+                  >
+                    ${format( new Date(option.bookingStartDate), "dd MMM yyyy"
+                    )}${" "} to ${format(new Date(option.bookingEndDate), "dd
+                    MMM yyyy")}
+                  </span>
+                </div>
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+                      flex: 1;
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    adult:
+                  </p>
+                  <span
+                    style="
+                      text-transform: capitalize;
+                      font-size: 0.875rem;
+                      flex: 2;
+                    "
+                  >
+                    ${option.adult}
+                  </span>
+                </div>
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+                      flex: 1;
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    children:
+                  </p>
+                  <span
+                    style="
+                      text-transform: capitalize;
+                      font-size: 0.875rem;
+                      flex: 2;
+                    "
+                  >
+                    ${option.children}
+                  </span>
+                </div>
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+                      flex: 1;
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    children:
+                  </p>
+                  <span
+                    style="
+                      text-transform: capitalize;
+                      font-size: 0.875rem;
+                      flex: 2;
+                    "
+                  >
+                    ${option.days}
+                  </span>
+                </div>
+                ` )}
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+                      flex: 1;
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    check out time:
+                  </p>
+                  <span
+                    style="
+                      text-transform: capitalize;
+                      font-size: 0.875rem;
+                      flex: 2;
+                    "
+                  >
+                    12:00:00
+                  </span>
+                </div>
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+                      flex: 1;
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    total amount:
+                  </p>
+                  <span
+                    style="
+                      text-transform: capitalize;
+                      font-size: 0.875rem;
+                      flex: 2;
+                    "
+                  >
+                    ${ transactionDetails?.convertedPrice === "USD" ? "$" :
+                    transactionDetails?.convertedPrice === "EUR" ? "£" : "₦" }
+                    ${[transactionDetails?.total] .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                  </span>
+                </div>
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+                      flex: 1;
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    transaction id:
+                  </p>
+                  <span
+                    style="
+                      text-transform: capitalize;
+                      font-size: 0.875rem;
+                      flex: 2;
+                    "
+                  >
+                    ${transactionDetails?.reference_id}
+                  </span>
+                </div>
+                <div
+                  style="
+                    justify-content: space-between;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    transaction status:
+                  </p>
+                  <span style="text-transform: capitalize; font-size: 0.875rem">
+                    Transaction Successful
+                  </span>
+                </div>
+              </div>
+            </main>
+          </div>
+        </div>
+
+        <p style="text-transform: capitalize">
+          ${transactionDetails?.bookedRoomsOption?.map(
+            (hotelName) => hotelName.hotelName
+          )} hotel
+        </p>
+
+
+        <span>
+          ${transactionDetails?.bookedRoomsOption?.map(
+            (hotelName) => hotelName.hotelAddress.toUpperCase()
+          )}
+        </span>
+
+
+        <p>
+          Your payment has been confirmed and the people at
+          ${transactionDetails?.bookedRoomsOption?.map(
+            (hotelName) => hotelName.hotelName
+          )} hotel will be delighted to have you
+          from ${transactionDetails?.bookedRoomsOption?.map(
+            (bookingDates) => ` ${format(
+              new Date(bookingDates.bookingStartDate),
+              "dd MMM yyyy"
+            )} to
+          ${format(
+            new Date(bookingDates.bookingEndDate),
+            "dd MMM yyyy"
+          )} `
+          )} Thank you for choosing us.
+        </p>
+
+        <p>
+          Enjoy and feel the difference with
+          ${transactionDetails?.bookedRoomsOption?.map(
+            (hotelName) =>
+              hotelName.hotelName.charAt(0).toUpperCase() +
+              hotelName.hotelName.slice(1)
+          )} Hotel.
+        </p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- begini -->
+
+`<div style="background-color: #eee">
+  <section
+    style="display: flex; justify-content: center; align-items: center"
+  >
+    <div style="width: 100%; max-width: 640px; padding: 1.25rem 1rem">
+      <div style="background-color: white">
+        <main style="border-top: 8px solid red">
+          <div
+            style="
+              background-color: rgba(17, 24, 39, 1);
+              color: white;
+              padding: 1.5rem 0;
+              text-align: center;
+            "
+          >
+            ${
+              isHotelNameRepeated ? (
+                transactionDetails?.bookedRoomsOption?.map(
+                  (hotelName) => (
+                    <h2 style="text-transform: capitalize">
+                      {hotelName.hotelName} hotel
+                    </h2>
+                  )
+                )[0]
+              ) : (
+                <>
+                  {transactionDetails?.bookedRoomsOption?.map(
+                    (hotelName) => (
+                      <h2 className="capitalize">
+                        {hotelName.hotelName} hotel
+                      </h2>
+                    )
+                  )}
+                </>
+              )
+            }
+            
+          ${
+            isHotelAddressRepeated
+              ? transactionDetails?.bookedRoomsOption?.map(
+                  (hotelAddress) => (
+                    <p>{hotelAddress.hotelAddress.toUpperCase()}</p>
+                  )
+                )[0]
+              : transactionDetails?.bookedRoomsOption?.map(
+                  (hotelAddress) => (
+                    <p>{hotelAddress.hotelAddress.toUpperCase()}</p>
+                  )
+                )
+          }
+        
+           
+          </div>
+          <div style="padding: 2.25rem 1.25rem 0">
+            <h3>
+              Dear ${transactionDetails?.lastName} ${" "} ${
+    transactionDetails?.firstName
+  }
+            </h3>
+            <p>
+            ${
+              isHotelNameRepeated ? (
+                <>
+                  Your payment has been confirmed and the people at{" "}
+                  {
+                    transactionDetails?.bookedRoomsOption?.map(
+                      (hotelName) => hotelName.hotelName
+                    )[0]
+                  }
+                </>
+              ) : (
+                <>
+                  Your payment has been confirmed and the people at
+                  {transactionDetails?.bookedRoomsOption?.map(
+                    (hotelName) => hotelName.hotelName
+                  )}
+                </>
+              )
+            }
+            hotel will be delighted to have you from
+            ${formattedBookingDates} Thank you for choosing us.
+          </p>
+          <p>
+          ${
+            isHotelNameRepeated ? (
+              <>
+                Enjoy and feel the difference with
+                {
+                  transactionDetails?.bookedRoomsOption?.map(
+                    (hotelName) =>
+                      hotelName.hotelName.charAt(0).toUpperCase() +
+                      hotelName.hotelName.slice(1)
+                  )[0]
+                }
+              </>
+            ) : (
+              <>
+                Enjoy and feel the difference with
+                {transactionDetails?.bookedRoomsOption?.map(
+                  (hotelName) =>
+                    hotelName.hotelName.charAt(0).toUpperCase() +
+                    hotelName.hotelName.slice(1)
+                )}
+              </>
+            )
+          }
+          Hotel.
+        </p>
+            <p>
+              Regards, <br />
+              The WillTrip Team
+            </p>
+          </div>
+          <div style="padding: 2.25rem 1.25rem">
+            <h1
+              style="
+                color: rgb(17 24 39 1);
+                text-transform: uppercase;
+                font-weight: 600;
+                font-size: 1.5rem;
+                text-align: center;
+                padding-bottom: 1.5rem;
+              "
+            >
+              Reservation summary
+            </h1>
+            <div
+              style="
+                justify-content: center;
+                align-items: center;
+                padding-bottom: 0.5rem;
+              "
+            >
+              <p
+                style="
+                  font-weight: 600;
+                  text-transform: capitalize;
+
+                  font-size: 1rem;
+                  line-height: 1.5rem;
+                "
+              >
+                Reservation Number:
+              </p>
+              <span style="text-transform: capitalize; font-size: 0.875rem">
+                ${transactionDetails?.bookingNumber}
+              </span>
+            </div>
+            <div
+              style="
+                justify-content: center;
+                align-items: center;
+                padding-bottom: 0.5rem;
+              "
+            >
+              <p
+                style="
+                  font-weight: 600;
+                  text-transform: capitalize;
+                  flex: 1;
+                  font-size: 1rem;
+                  line-height: 1.5rem;
+                "
+              >
+                last name:
+              </p>
+              <span
+                style="
+                  text-transform: capitalize;
+                  font-size: 0.875rem;
+                  flex: 2;
+                "
+              >
+                ${transactionDetails?.lastName}
+              </span>
+            </div>
+            <div
+              style="
+                justify-content: center;
+                align-items: center;
+                padding-bottom: 0.5rem;
+              "
+            >
+              <p
+                style="
+                  font-weight: 600;
+                  text-transform: capitalize;
+                  flex: 1;
+                  font-size: 1rem;
+                  line-height: 1.5rem;
+                "
+              >
+                first name:
+              </p>
+              <span
+                style="
+                  text-transform: capitalize;
+                  font-size: 0.875rem;
+                  flex: 2;
+                "
+              >
+                ${transactionDetails?.firstName}
+              </span>
+            </div>
+            <div
+              style="
+                justify-content: center;
+                align-items: center;
+                padding-bottom: 0.5rem;
+              "
+            >
+              <p
+                style="
+                  font-weight: 600;
+                  text-transform: capitalize;
+                  flex: 1;
+                  font-size: 1rem;
+                  line-height: 1.5rem;
+                "
+              >
+                phone:
+              </p>
+              <span
+                style="
+                  text-transform: capitalize;
+                  font-size: 0.875rem;
+                  flex: 2;
+                "
+              >
+                ${transactionDetails?.mobileNumber}
+              </span>
+            </div>
+            <div
+              style="
+                justify-content: center;
+                align-items: center;
+                padding-bottom: 0.5rem;
+              "
+            >
+              <p
+                style="
+                  font-weight: 600;
+                  text-transform: capitalize;
+                  flex: 1;
+                  font-size: 1rem;
+                  line-height: 1.5rem;
+                "
+              >
+                email:
+              </p>
+              <span
+                style="
+                  text-transform: capitalize;
+                  font-size: 0.875rem;
+                  flex: 2;
+                "
+              >
+                ${transactionDetails?.email}
+              </span>
+            </div>
+            <div
+              style="
+                justify-content: center;
+                align-items: center;
+                padding-bottom: 0.5rem;
+              "
+            >
+              <p
+                style="
+                  font-weight: 600;
+                  text-transform: capitalize;
+                  flex: 1;
+                  font-size: 1rem;
+                  line-height: 1.5rem;
+                "
+              >
+                arrival date:
+              </p>
+              <span
+                style="
+                  text-transform: capitalize;
+                  font-size: 0.875rem;
+                  flex: 2;
+                "
+              >
+                ${transactionDetails?.arrivalTime}
+              </span>
+            </div>
+            ${transactionDetails?.bookedRoomsOption?.map(
+              (option, index) =>
+                `
+            <div
+              style="
+                justify-content: center;
+                align-items: center;
+                padding-bottom: 0.5rem;
+              "
+            >
+              <p
+                style="
+                  font-weight: 600;
+                  text-transform: capitalize;
+                  flex: 1;
+                  font-size: 1rem;
+                  line-height: 1.5rem;
+                "
+              >
+                hotel name:
+              </p>
+              <span
+                style="
+                  text-transform: capitalize;
+                  font-size: 0.875rem;
+                  flex: 2;
+                "
+              >
+                ${option.hotelName}
+              </span>
+            </div>
+            <div
+              style="
+                justify-content: center;
+                align-items: center;
+                padding-bottom: 0.5rem;
+              "
+            >
+              <p
+                style="
+                  font-weight: 600;
+                  text-transform: capitalize;
+                  flex: 1;
+                  font-size: 1rem;
+                  line-height: 1.5rem;
+                "
+              >
+                hotel location:
+              </p>
+              <span
+                style="
+                  text-transform: capitalize;
+                  font-size: 0.875rem;
+                  flex: 2;
+                "
+              >
+                ${option.hotelLocation}
+              </span>
+            </div>
+            <div
+              style="
+                justify-content: center;
+                align-items: center;
+                padding-bottom: 0.5rem;
+              "
+            >
+              <p
+                style="
+                  font-weight: 600;
+                  text-transform: capitalize;
+                  flex: 1;
+                  font-size: 1rem;
+                  line-height: 1.5rem;
+                "
+              >
+                room title:
+              </p>
+              <span
+                style="
+                  text-transform: capitalize;
+                  font-size: 0.875rem;
+                  flex: 2;
+                "
+              >
+                ${option.roomTitle}
+              </span>
+            </div>
+            <div
+              style="
+                justify-content: center;
+                align-items: center;
+                padding-bottom: 0.5rem;
+              "
+            >
+              <p
+                style="
+                  font-weight: 600;
+                  text-transform: capitalize;
+                  flex: 1;
+                  font-size: 1rem;
+                  line-height: 1.5rem;
+                "
+              >
+                room feature:
+              </p>
+              <span
+                style="
+                  text-transform: capitalize;
+                  font-size: 0.875rem;
+                  flex: 2;
+                "
+              >
+                ${option.feature}
+              </span>
+            </div>
+            <div
+              style="
+                justify-content: center;
+                align-items: center;
+                padding-bottom: 0.5rem;
+              "
+            >
+              <p
+                style="
+                  font-weight: 600;
+                  text-transform: capitalize;
+                  flex: 1;
+                  font-size: 1rem;
+                  line-height: 1.5rem;
+                "
+              >
+                room price:
+              </p>
+              <span
+                style="
+                  text-transform: capitalize;
+                  font-size: 0.875rem;
+                  flex: 2;
+                "
+              >
+                ${
+                  transactionDetails?.convertedPrice === "USD"
+                    ? "$"
+                    : transactionDetails?.convertedPrice === "EUR"
+                    ? "£"
+                    : "₦"
+                }
+                ${[option.roomPrice]
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              </span>
+            </div>
+            <div
+              style="
+                justify-content: center;
+                align-items: center;
+                padding-bottom: 0.5rem;
+              "
+            >
+              <p
+                style="
+                  font-weight: 600;
+                  text-transform: capitalize;
+                  flex: 1;
+                  font-size: 1rem;
+                  line-height: 1.5rem;
+                "
+              >
+                room number:
+              </p>
+              <span
+                style="
+                  text-transform: capitalize;
+                  font-size: 0.875rem;
+                  flex: 2;
+                "
+              >
+                ${option.roomNumber}
+              </span>
+            </div>
+            <div
+              style="
+                justify-content: center;
+                align-items: center;
+                padding-bottom: 0.5rem;
+              "
+            >
+              <p
+                style="
+                  font-weight: 600;
+                  text-transform: capitalize;
+                  flex: 1;
+                  font-size: 1rem;
+                  line-height: 1.5rem;
+                "
+              >
+                booking dates:
+              </p>
+              <span
+                style="
+                  text-transform: capitalize;
+                  font-size: 0.875rem;
+                  flex: 2;
+                "
+              >
+                ${format(
+                  new Date(option.bookingStartDate),
+                  "dd MMM yyyy"
+                )}${" "} to ${format(
+                  new Date(option.bookingEndDate),
+                  "dd MMM yyyy"
+                )}
+              </span>
+            </div>
+            <div
+              style="
+                justify-content: center;
+                align-items: center;
+                padding-bottom: 0.5rem;
+              "
+            >
+              <p
+                style="
+                  font-weight: 600;
+                  text-transform: capitalize;
+                  flex: 1;
+                  font-size: 1rem;
+                  line-height: 1.5rem;
+                "
+              >
+                adult:
+              </p>
+              <span
+                style="
+                  text-transform: capitalize;
+                  font-size: 0.875rem;
+                  flex: 2;
+                "
+              >
+                ${option.adult}
+              </span>
+            </div>
+            <div
+              style="
+                justify-content: center;
+                align-items: center;
+                padding-bottom: 0.5rem;
+              "
+            >
+              <p
+                style="
+                  font-weight: 600;
+                  text-transform: capitalize;
+                  flex: 1;
+                  font-size: 1rem;
+                  line-height: 1.5rem;
+                "
+              >
+                children:
+              </p>
+              <span
+                style="
+                  text-transform: capitalize;
+                  font-size: 0.875rem;
+                  flex: 2;
+                "
+              >
+                ${option.children}
+              </span>
+            </div>
+            <div
+              style="
+                justify-content: center;
+                align-items: center;
+                padding-bottom: 0.5rem;
+              "
+            >
+              <p
+                style="
+                  font-weight: 600;
+                  text-transform: capitalize;
+                  flex: 1;
+                  font-size: 1rem;
+                  line-height: 1.5rem;
+                "
+              >
+                children:
+              </p>
+              <span
+                style="
+                  text-transform: capitalize;
+                  font-size: 0.875rem;
+                  flex: 2;
+                "
+              >
+                ${option.days}
+              </span>
+            </div>
+            `
+            )}
+            <div
+              style="
+                justify-content: center;
+                align-items: center;
+                padding-bottom: 0.5rem;
+              "
+            >
+              <p
+                style="
+                  font-weight: 600;
+                  text-transform: capitalize;
+                  flex: 1;
+                  font-size: 1rem;
+                  line-height: 1.5rem;
+                "
+              >
+                check out time:
+              </p>
+              <span
+                style="
+                  text-transform: capitalize;
+                  font-size: 0.875rem;
+                  flex: 2;
+                "
+              >
+                12:00:00
+              </span>
+            </div>
+            <div
+              style="
+                justify-content: center;
+                align-items: center;
+                padding-bottom: 0.5rem;
+              "
+            >
+              <p
+                style="
+                  font-weight: 600;
+                  text-transform: capitalize;
+                  flex: 1;
+                  font-size: 1rem;
+                  line-height: 1.5rem;
+                "
+              >
+                total amount:
+              </p>
+              <span
+                style="
+                  text-transform: capitalize;
+                  font-size: 0.875rem;
+                  flex: 2;
+                "
+              >
+                ${
+                  transactionDetails?.convertedPrice === "USD"
+                    ? "$"
+                    : transactionDetails?.convertedPrice === "EUR"
+                    ? "£"
+                    : "₦"
+                }
+                ${[transactionDetails?.total]
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              </span>
+            </div>
+            <div
+              style="
+                justify-content: center;
+                align-items: center;
+                padding-bottom: 0.5rem;
+              "
+            >
+              <p
+                style="
+                  font-weight: 600;
+                  text-transform: capitalize;
+                  flex: 1;
+                  font-size: 1rem;
+                  line-height: 1.5rem;
+                "
+              >
+                transaction id:
+              </p>
+              <span
+                style="
+                  text-transform: capitalize;
+                  font-size: 0.875rem;
+                  flex: 2;
+                "
+              >
+                ${transactionDetails?.reference_id}
+              </span>
+            </div>
+            <div
+              style="
+                justify-content: space-between;
+                align-items: center;
+                padding-bottom: 0.5rem;
+              "
+            >
+              <p
+                style="
+                  font-weight: 600;
+                  text-transform: capitalize;
+
+                  font-size: 1rem;
+                  line-height: 1.5rem;
+                "
+              >
+                transaction status:
+              </p>
+              <span style="text-transform: capitalize; font-size: 0.875rem">
+                Transaction Successful
+              </span>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </section>
+</div>`
+
+
+<!-- end -->
+
+      </section>
+    </div>
+  </body>
+</html>
