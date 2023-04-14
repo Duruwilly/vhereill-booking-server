@@ -1,5 +1,5 @@
 import express from "express";
-import { merchantListings, merchantRoomsListings } from "../controllers/MerchantListings.js";
+import { merchantListings, merchantRoomsListings } from "../controllers/MerchantListingsController.js";
 import { verifyUser } from "../utils/verifyToken.js";
 
 const router = express.Router();

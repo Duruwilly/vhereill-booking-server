@@ -5,7 +5,7 @@ import {
   deleteCartItem,
   getCartItems,
   getItemTotalQuantity,
-} from "../controllers/cart.js";
+} from "../controllers/CartController.js";
 import { verifyUser } from "../utils/verifyToken.js";
 
 const router = express.Router();
