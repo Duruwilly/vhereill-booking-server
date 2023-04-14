@@ -13,7 +13,7 @@ export const register = async (req, res, next) => {
       return next(createError(500, "Email already exist"));
     }
 
-    // Validate the new password
+    // VALIDATE PASSWORD
     if (!validatePassword(req.body.password)) {
       return next(createError(400, "Password is too weak"));
     }
@@ -32,18 +32,16 @@ export const register = async (req, res, next) => {
       { id: newUser._id, isAdmin: newUser.isAdmin },
       process.env.JWT_SECRET_KEY
     );
-    // newUser.token = token;
     await newUser.save();
 
-    // const { password, isAdmin, ...otherDetails } = newUser._doc;
-    res.status(201).json({
+    return res.status(201).json({
       status: "success",
       message: "User created succesfully",
       token: token,
       id: newUser._id,
     });
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 
@@ -63,13 +61,14 @@ export const login = async (req, res, next) => {
       { id: user._id, isAdmin: user.isAdmin },
       process.env.JWT_SECRET_KEY
     );
-  
+
     user.save();
-    res
+
+    return res
       .status(200)
       .json({ msg: "logged in successfully", token: token, id: user._id });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -91,7 +90,7 @@ export const forgotpassword = async (req, res, next) => {
       subject: "Your password reset token is valid for 10 mins",
       message,
     });
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Password Reset sent to email!",
     });
@@ -111,11 +110,11 @@ export const forgotpassword = async (req, res, next) => {
 export const getpasswordLink = async (req, res, next) => {
   try {
     const token = req.params.resetToken;
-    res
+    return res
       .status(302)
       .redirect(`http://localhost:3001/users/resetpassword/${token}`);
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -130,7 +129,7 @@ export const resetpassword = async (req, res, next) => {
   });
   if (!user) return next(createError(400, "Token is invalid or expired"));
 
-  // Validate the new password
+  // VALIDATE NEW PASSWORD
   if (!validatePassword(req.body.password)) {
     return next(
       createError(400, "Password does not meet security requirements")
@@ -144,8 +143,7 @@ export const resetpassword = async (req, res, next) => {
   // user.token = undefined;
 
   await user.save();
-  res.status(200).json({
+  return res.status(200).json({
     status: "successfully updated Password",
   });
 };
-

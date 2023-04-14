@@ -119,13 +119,6 @@ export const paymentTransactions = async (req, res, next) => {
 
 export const paymentCallback = async (req, res) => {
   const { status, tx_ref, transaction_id } = req.params;
-  // const transactionsList = new Transactions();
-  // console.log(transactionsList);
-  // const { hotelID, itemId } = transactionsList;
-  // console.log(hotelID, itemId);
-
-  // let roomNumber = transactionsList.bookedRoomsOption.map((num) => num.roomNumber)[0];
-  // console.log(roomNumber);
   try {
     if (status === "successful") {
       const transactionDetails = await Transactions.findOne({
@@ -135,7 +128,7 @@ export const paymentCallback = async (req, res) => {
         return res.status(400).json({ message: "Transaction not found" });
       }
 
-      // verify the payment before sending the value
+      // VERIFY THE PAYMENT BEFORE SENDING THE VALUE
       const response = await flutterwave.Transaction.verify({
         id: transaction_id,
       });
@@ -144,13 +137,7 @@ export const paymentCallback = async (req, res) => {
         response.data.amount === transactionDetails.total &&
         response.data.currency === transactionDetails.convertedPrice
       ) {
-        // update the room status in the db to booked
-        // await Rooms.findOneAndUpdate(
-        //   { hotelID, roomID, roomNumber, status: "locked" },
-        //   { status: "booked" },
-        //   { new: true }
-        // );
-        // Update the payment status in the database and send a success response
+        // UPDATE THE PAYMENT STATUS IN THE DATABASEE AND SEND A SUCCESS RESPONSE
         const result = await Transactions.updateOne(
           { reference_id: tx_ref },
           {
@@ -160,6 +147,7 @@ export const paymentCallback = async (req, res) => {
               bookingNumber: bookingNumber,
             },
           },
+          //
           { upsert: false }
         );
         const transporter = nodemailer.createTransport({
@@ -853,7 +841,8 @@ export const paymentCallback = async (req, res) => {
           { $set: { status: "failed", transaction_id } },
           { upsert: false }
         );
-        // Send a failure response if the payment verification fails
+
+        // SEND A FAILURE RESPONSE IF THE PAYMENT VERIFICATION FAILS
         return res
           .status(400)
           .json({ message: "Payment verification failed." });
@@ -864,7 +853,8 @@ export const paymentCallback = async (req, res) => {
         { $set: { status: "failed", transaction_id } },
         { upsert: false }
       );
-      // Send a failure response if the payment was not successful
+
+      // SEND A FAILURE RESPONSE IF THE PAYMENT WAS NOT SUCCESSFUL
       return res.status(400).json({ message: "Payment not successful." });
     }
   } catch (err) {
@@ -874,21 +864,13 @@ export const paymentCallback = async (req, res) => {
   }
 };
 
+// GET THE BOOKED DATES FROM SUCCESSFUL TRANSACTIONS
 export const getDatesInTransactions = async (req, res, next) => {
   try {
     const transaction = await Transactions.find({
       "bookedRoomsOption.roomID": req.params.id,
       status: "successful",
     });
-
-    //     const transaction = await Transactions.find({
-    //   bookedRoomsOption: {
-    //     $elemMatch: {
-    //       roomID: req.params.id
-    //     }
-    //   },
-    //   status: "successful",
-    // });
 
     return res
       .status(200)
@@ -928,7 +910,7 @@ export const getTransactions = async (req, res, next) => {
 
   try {
     const transactions = await result.find(queryObject);
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       status: "success",
       data: transactions,
@@ -936,6 +918,6 @@ export const getTransactions = async (req, res, next) => {
       per_page: limit,
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };

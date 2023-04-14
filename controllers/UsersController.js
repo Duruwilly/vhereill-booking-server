@@ -16,15 +16,13 @@ export const updateUser = async (req, res, next) => {
       }
     );
     const { password, isAdmin, ...otherDetails } = updatedUser._doc;
-    res
-      .status(200)
-      .json({
-        status: "success",
-        msg: "profile updated successfully",
-        data: otherDetails,
-      });
+    return res.status(200).json({
+      status: "success",
+      msg: "profile updated successfully",
+      data: otherDetails,
+    });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -52,41 +50,39 @@ export const updateUserPassword = async (req, res, next) => {
             new: true,
           }
         );
-        res.status(200).send({ msg: "password updated successfully" });
+        return res.status(200).send({ msg: "password updated successfully" });
       } catch (error) {
-        next(error);
+        return next(error);
       }
     }
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
-
-
 
 export const deleteUser = async (req, res, next) => {
   try {
     await User.findByIdAndDelete(req.params.id);
-    res.status(200).json({ msg: "user deleted" });
+    return res.status(200).json({ msg: "user deleted" });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
 export const getUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
-    res.status(200).json({ status: "success", data: user });
+    return res.status(200).json({ status: "success", data: user });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
 export const getUsers = async (req, res, next) => {
   try {
     const users = await User.find({});
-    res.status(200).json(users);
+    return res.status(200).json(users);
   } catch (error) {
-    res.status(500).json(error);
+    return res.status(500).json(error);
   }
 };
