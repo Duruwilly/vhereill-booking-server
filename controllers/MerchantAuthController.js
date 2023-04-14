@@ -10,7 +10,7 @@ export const merchantRegister = async (req, res, next) => {
     if (newUser) {
       return next(createError(400, "Email already exist"));
     }
-    //   validate password
+    //   VALIDATE PASSWORD
     if (!validatePassword(req.body.password)) {
       return next(createError(400, "Password is too weak"));
     }
@@ -32,14 +32,14 @@ export const merchantRegister = async (req, res, next) => {
     );
 
     await merchantUser.save();
-    res.status(201).json({
+    return res.status(201).json({
       status: "success",
       message: "User created succesfully",
       token: token,
       id: merchantUser._id,
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -59,13 +59,12 @@ export const merchantLogin = async (req, res, next) => {
       { id: user._id, isAdmin: user.isAdmin, role: user.role },
       process.env.JWT_SECRET_KEY
     );
-    // const { password, isAdmin, ...otherDetails } = user._doc;
-    // user.token = token;
+
     user.save();
-    res
+    return res
       .status(200)
       .json({ msg: "logged in successfully", token: token, id: user._id });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };

@@ -15,8 +15,8 @@ export const createReviews = async (req, res, next) => {
     } catch (error) {
       next(error);
     }
-    res.status(200).json(savedReviews);
+    return res.status(200).json(savedReviews);
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };

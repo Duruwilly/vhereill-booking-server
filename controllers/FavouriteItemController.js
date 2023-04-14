@@ -2,7 +2,6 @@ import Favourites from "../models/Favourites.js";
 
 export const addToFavourite = async (req, res, next) => {
   const favouriteItems = new Favourites(req.body);
-
   try {
     const savedItems = await favouriteItems.save();
     return res.status(201).json({ status: "success", data: savedItems });

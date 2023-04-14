@@ -34,7 +34,7 @@ export const createHotel = async (req, res, next) => {
       });
     }
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
