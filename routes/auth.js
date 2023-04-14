@@ -1,9 +1,9 @@
 import express from "express";
-import { login, register } from "../controllers/auth.js";
+import { login, register } from "../controllers/AuthController.js";
 import {
   merchantLogin,
   merchantRegister,
-} from "../controllers/merchantAuth.js";
+} from "../controllers/MerchantAuthController.js";
 
 const router = express.Router();
 

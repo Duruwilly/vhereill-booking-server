@@ -7,7 +7,7 @@ import {
   getHotels,
   // getHotelsByCityName,
   updateHotel,
-} from "../controllers/hotel.js";
+} from "../controllers/HotelController.js";
 import Hotel from "../models/Hotels.js";
 import { upload } from "../utils/cloudinaryStorage.js";
 import { createError } from "../utils/error.js";

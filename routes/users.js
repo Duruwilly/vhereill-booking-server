@@ -3,14 +3,14 @@ import {
   forgotpassword,
   getpasswordLink,
   resetpassword,
-} from "../controllers/auth.js";
+} from "../controllers/AuthController.js";
 import {
   deleteUser,
   getUser,
   getUsers,
   updateUser,
   updateUserPassword,
-} from "../controllers/users.js";
+} from "../controllers/UsersController.js";
 import { verifyAdmin, verifyToken, verifyUser } from "../utils/verifyToken.js";
 
 const router = express.Router();
