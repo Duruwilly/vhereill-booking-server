@@ -2,6 +2,7 @@ import express from "express";
 import {
   createHotel,
   deleteHotel,
+  getAdminHotels,
   getHotel,
   getHotelRooms,
   getHotels,
@@ -42,6 +43,8 @@ router.delete("/:id/:itemId", verifyMerchantAndAdmin, deleteHotel);
 router.get("/find/:id", getHotel);
 // *****GET ALL******//
 router.get("/", getHotels);
+
+router.get("/admin", getAdminHotels);
 // router.get("/getByCityName",  getHotelsByCityName);
 router.get("/room/:id", getHotelRooms);
 

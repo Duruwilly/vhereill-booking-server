@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { roles } from "./checkAdminAccess.js";
 import { createError } from "./error.js";
 
 export const verifyToken = async (req, res, next) => {
@@ -54,6 +55,20 @@ export const verifyMerchantAndAdmin = (req, res, next) => {
       next();
     } else {
       return next(createError(403, "unauthorized"));
+    }
+  });
+};
+
+export const verifyRole = (req, res, next) => {
+  verifyToken(req, res, () => {
+    const userRole = req?.user?.role;
+    const params = req?.params?.id;
+    const permissions = roles[userRole]?.permissions;
+    const isAuthorize = permissions?.includes(params);
+    if (isAuthorize) {
+      next();
+    } else {
+      return next(createError(403, "Forbidden"));
     }
   });
 };

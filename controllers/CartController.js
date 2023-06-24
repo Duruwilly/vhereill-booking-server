@@ -11,7 +11,11 @@ export const addToCart = async (req, res, next) => {
       userID: cartItem.userID,
     });
 
-    if (!existingCartItem) {
+    if (existingCartItem) {
+      return res
+        .status(200)
+        .json({ msg: "item already exist in your confirmation page" });
+    } else {
       const savedCartItem = new Cart({
         ...req.body,
       });

@@ -1,6 +1,7 @@
 import express from "express";
 import authRoutes from "./routes/auth.js";
 import usersRoutes from "./routes/users.js";
+import adminUsersRoutes from "./routes/adminUsers.js";
 import hotelsRoutes from "./routes/hotels.js";
 import roomsRoutes from "./routes/rooms.js";
 import reviewsRoutes from "./routes/reviews.js";
@@ -10,6 +11,8 @@ import cartRoutes from "./routes/cart.js";
 import favouriteRoutes from "./routes/favourite.js";
 import checkAccessRoutes from "./routes/checkAccess.js";
 import merchantListingsRoutes from "./routes/merchantListings.js";
+import dashboardDataRoutes from "./routes/dashboardData.js";
+import adminAuthRoutes from "./routes/adminAuth.js";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -18,7 +21,7 @@ dotenv.config();
 import mongoose from "mongoose";
 
 const app = express();
-const port = 8800;
+const port = 8000;
 
 app.use(cors());
 
@@ -29,7 +32,9 @@ app.use("/logo", express.static("logo"));
 app.set("view engine", "ejs");
 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/admin", adminAuthRoutes);
 app.use("/api/v1/users", usersRoutes);
+app.use("/api/v1/admin-users", adminUsersRoutes);
 app.use("/api/v1/hotels", hotelsRoutes);
 app.use("/api/v1/rooms", roomsRoutes);
 app.use("/api/v1/create-reviews", reviewsRoutes);
@@ -39,6 +44,7 @@ app.use("/api/v1/cart", cartRoutes);
 app.use("/api/v1/favourites", favouriteRoutes);
 app.use("/api/v1/checkAccess", checkAccessRoutes);
 app.use("/api/v1/merchant", merchantListingsRoutes);
+app.use("/api/v1/admin/dashboard", dashboardDataRoutes);
 
 app.use((err, req, res, next) => {
   // console.log(err);

@@ -1,19 +1,17 @@
-import User from "../models/Users.js";
 import bcrypt from "bcryptjs";
-import { createError } from "../utils/error.js";
 import jwt from "jsonwebtoken";
+import AdminUsers from "../models/AdminUser.js";
+import { createError } from "../utils/error.js";
 import sendEmail from "../utils/sendEmail.js";
-import crypto from "crypto";
 import { validatePassword } from "../utils/validatePassword.js";
 
-export const register = async (req, res, next) => {
+export const adminRegister = async (req, res, next) => {
   try {
-    const user = await User.findOne({ email: req.body.email });
-    if (user) {
-      return next(createError(500, "Email already exist"));
+    const newUser = await AdminUsers.findOne({ email: req.body.email });
+    if (newUser) {
+      return next(createError(400, "Email already exist"));
     }
-
-    // VALIDATE PASSWORD
+    //   VALIDATE PASSWORD
     if (!validatePassword(req.body.password)) {
       return next(createError(400, "Password is too weak"));
     }
@@ -21,34 +19,35 @@ export const register = async (req, res, next) => {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(req.body.password, salt);
 
-    const newUser = new User({
+    const adminUser = new AdminUsers({
       fullname: req.body.fullname,
       country: req.body.country,
       email: req.body.email,
       password: hash,
       mobileNumber: req.body.mobileNumber,
-      role: "regular",
+      role: req.body.role,
+      gender: req.body.gender
     });
     const token = jwt.sign(
-      { id: newUser._id, isAdmin: newUser.isAdmin, role: newUser.role },
+      { id: adminUser._id, role: adminUser.role },
       process.env.JWT_SECRET_KEY
     );
-    await newUser.save();
 
+    await adminUser.save();
     return res.status(201).json({
       status: "success",
       message: "User created succesfully",
-      token: token,
-      id: newUser._id,
+      // token: token,
+      // id: adminUser._id,
     });
-  } catch (err) {
-    return next(err);
+  } catch (error) {
+    return next(error);
   }
 };
 
-export const login = async (req, res, next) => {
+export const adminLogin = async (req, res, next) => {
   try {
-    const user = await User.findOne({ email: req.body.email });
+    const user = await AdminUsers.findOne({ email: req.body.email });
     if (!user) return next(createError(404, "User not found"));
 
     const isPasswordCorrect = await bcrypt.compare(
@@ -56,25 +55,31 @@ export const login = async (req, res, next) => {
       user.password
     );
     if (!isPasswordCorrect)
-      return next(createError(404, "Wrong password or email"));
+      return next(createError(404, "Wrong password or username"));
 
     const token = jwt.sign(
       { id: user._id, isAdmin: user.isAdmin, role: user.role },
       process.env.JWT_SECRET_KEY
     );
 
-    user.save();
-
-    return res
-      .status(200)
-      .json({ msg: "logged in successfully", token: token, id: user._id });
+    // user.save();
+    const { password, ...otherDetails } = user._doc;
+    return res.status(200).json({
+      status: "success",
+      msg: "logged in successfully",
+      token: token,
+      // id: user._id,
+      // role: user.role,
+      // admin: user.isAdmin,
+      data: otherDetails,
+    });
   } catch (error) {
     return next(error);
   }
 };
 
 export const forgotpassword = async (req, res, next) => {
-  const user = await User.findOne({ email: req.body.email });
+  const user = await AdminUsers.findOne({ email: req.body.email });
   if (!user) return next(createError(404, "No user with that email"));
   const resetToken = user.createResetPassword();
 
@@ -124,7 +129,7 @@ export const resetpassword = async (req, res, next) => {
     .createHash("sha256")
     .update(req.params.resetToken)
     .digest("hex");
-  const user = await User.findOne({
+  const user = await AdminUsers.findOne({
     resetPasswordToken: hashedToken,
     resetPasswordExpires: { $gt: Date.now() },
   });
