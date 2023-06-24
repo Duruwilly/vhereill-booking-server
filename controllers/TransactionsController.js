@@ -55,68 +55,6 @@ export const paymentTransactions = async (req, res, next) => {
   }
 };
 
-// export const paymentCallback = async (req, res) => {
-//   const { status, tx_ref, transaction_id } = req.params;
-//   console.log(status);
-//   try {
-//     if (status === "successful") {
-//       const transactionDetails = await Transactions.findOne({
-//         reference_id: tx_ref,
-//       });
-//       console.log(transactionDetails);
-//       if (!transactionDetails) {
-//         return res.status(400).json({ message: "Transaction not found" });
-//       }
-
-//       const response = await flutterwave.Transaction.verify({
-//         id: transaction_id,
-//       });
-//       console.log(response);
-//       if (
-//         response?.data?.status === "successful" &&
-//         response.data.amount === transactionDetails.total &&
-//         response.data.currency === transactionDetails.convertedPrice
-//       ) {
-//         // Update the payment status in the database and send a success response
-//         // await Transactions.updateOne(
-//         //   { transaction_id: req.body.tx_ref },
-//         //   { $set: { status: "successful" } }
-//         // );
-//         await Transactions.findOneAndUpdate(
-//           // { reference_id: tx_ref },
-//           { $set: { status: "successful", transaction_id: transaction_id } },
-//           { new: true }
-//         );
-//         return res.status(200).json({
-//           // message: "Payment successful.",
-//           status: "success",
-//           transaction_description: "TRANSACTION SUCCESSFUL",
-//           transaction_date: new Date(),
-//           transaction_data: transactionDetails,
-//         });
-//       } else {
-//         await Transactions.updateOne(
-//           // { reference_id: tx_ref },
-//           { $set: { status: "failed" } },
-//           { $set: { transaction_id: transaction_id } }
-//         );
-//         // Send a failure response if the payment verification fails
-//         return res
-//           .status(400)
-//           .json({ message: "Payment verification failed." });
-//       }
-//     } else {
-//       // Send a failure response if the payment was not successful
-//       return res.status(400).json({ message: "Payment not successful." });
-//     }
-//   } catch (err) {
-//     console.error(err);
-//     return res
-//       .status(500)
-//       .json({ message: "An error occurred while processing the payment." });
-//   }
-// };
-
 export const paymentCallback = async (req, res) => {
   const { status, tx_ref, transaction_id } = req.params;
   try {
@@ -124,6 +62,7 @@ export const paymentCallback = async (req, res) => {
       const transactionDetails = await Transactions.findOne({
         reference_id: tx_ref,
       });
+      
       if (!transactionDetails) {
         return res.status(400).json({ message: "Transaction not found" });
       }
@@ -843,9 +782,10 @@ export const paymentCallback = async (req, res) => {
         );
 
         // SEND A FAILURE RESPONSE IF THE PAYMENT VERIFICATION FAILS
+        // add the ref to the frontend receipt later
         return res
           .status(400)
-          .json({ message: "Payment verification failed." });
+          .json({ ref: tx_ref, message: "Payment verification failed." });
       }
     } else {
       await Transactions.updateOne(
@@ -855,7 +795,9 @@ export const paymentCallback = async (req, res) => {
       );
 
       // SEND A FAILURE RESPONSE IF THE PAYMENT WAS NOT SUCCESSFUL
-      return res.status(400).json({ message: "Payment not successful." });
+      return res
+        .status(400)
+        .json({ ref: tx_ref, message: "Payment not successful." });
     }
   } catch (err) {
     return res
@@ -892,18 +834,111 @@ export const getSingleTransaction = async (req, res, next) => {
   }
 };
 
-export const getTransactions = async (req, res, next) => {
-  const { transaction_id } = req.query;
+export const getTransactionStatus = async (req, res, next) => {
+  const { statusType } = req.params;
+  const { transaction_id, reference_id, status, firstName, lastName, email } =
+    req.query;
   const queryObject = {};
 
   if (transaction_id) {
     queryObject.transaction_id = transaction_id;
   }
 
+  if (reference_id) {
+    queryObject.reference_id = reference_id;
+  }
+
+  if (status) {
+    queryObject.status = { $regex: `^${status}$`, $options: "i" };
+  }
+
+  if (firstName) {
+    queryObject.firstName = { $regex: `^${firstName}$`, $options: "i" };
+  }
+
+  if (lastName) {
+    queryObject.lastName = { $regex: `^${lastName}$`, $options: "i" };
+  }
+
+  if (email) {
+    queryObject.email = { $regex: `^${email}$`, $options: "i" };
+  }
+
+  let resultQuery = statusType
+    ? Transactions.find({ status: statusType })
+    : Transactions.find(queryObject);
+
+  const totalCountQuery = statusType
+    ? Transactions.countDocuments({ status: statusType })
+    : Transactions.countDocuments(queryObject);
+
+  const totalCount = await totalCountQuery;
+  const page = Number(req.query.page) || 1;
+  const limit = 20;
+  const skip = (page - 1) * limit;
+
+  resultQuery = resultQuery.skip(skip).limit(limit);
+
+  try {
+    const transactions = await resultQuery.find(queryObject);
+    return res.status(200).json({
+      success: true,
+      status: "success",
+      data: transactions,
+      total: totalCount,
+      per_page: limit,
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+export const getTransactions = async (req, res, next) => {
+  const {
+    transaction_id,
+    reference_id,
+    status,
+    firstName,
+    lastName,
+    email,
+    bookingNumber,
+  } = req.query;
+  const queryObject = {};
+
+  if (transaction_id) {
+    queryObject.transaction_id = transaction_id;
+  }
+
+  if (reference_id) {
+    queryObject.reference_id = reference_id;
+  }
+
+  if (bookingNumber) {
+    queryObject.bookingNumber = { $regex: `^${bookingNumber}$`, $options: "i" };
+  }
+
+  if (status) {
+    queryObject.status = { $regex: `^${status}$`, $options: "i" };
+  }
+
+  if (firstName) {
+    queryObject.firstName = { $regex: `^${firstName}$`, $options: "i" };
+  }
+
+  if (lastName) {
+    queryObject.lastName = { $regex: `^${lastName}$`, $options: "i" };
+  }
+
+  if (email) {
+    queryObject.email = { $regex: `^${email}$`, $options: "i" };
+  }
+
+  let totalCount = await Transactions.countDocuments(queryObject);
+
   let result = Transactions.find(queryObject);
 
   const page = Number(req.query.page) || 1;
-  const limit = 7;
+  const limit = 20;
   const skip = (page - 1) * limit;
 
   result = result.skip(skip).limit(limit);
@@ -914,7 +949,345 @@ export const getTransactions = async (req, res, next) => {
       success: true,
       status: "success",
       data: transactions,
-      total: transactions.length,
+      total: totalCount,
+      per_page: limit,
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+export const cancelledBookings = async (req, res, next) => {
+  const tx_ref = req.params.tx_ref;
+
+  const transactionDetails = await Transactions.findOne({
+    reference_id: tx_ref,
+  });
+
+  if (transactionDetails.status === "cancelled") {
+    return res
+      .status(400)
+      .json({ message: "Reservation has already been cancelled" });
+  }
+
+  if (!transactionDetails) {
+    return res.status(400).json({ message: "Reservation not found" });
+  }
+
+  try {
+    await Transactions.updateOne(
+      { reference_id: tx_ref },
+      {
+        $set: {
+          status: "cancelled",
+        },
+      },
+      //
+      { upsert: false }
+    );
+
+    const transporter = nodemailer.createTransport({
+      service: process.env.SERVICE,
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.EMAILPASSWORD,
+      },
+      // secure: true,
+    });
+    const message = {
+      from: `WillTrip <${process.env.EMAIL}>`,
+      to: transactionDetails.email,
+      subject: `${transactionDetails.firstName} ${" "} ${
+        transactionDetails.lastName
+      }, Your Cancelled reservation number is ${bookingNumber}`,
+      html: `<div style="background-color: #eee">
+      <section
+        style="display: flex; justify-content: center; align-items: center"
+      >
+        <div style="width: 100%; max-width: 640px; padding: 1.25rem 1rem">
+          <div style="background-color: white">
+            <main style="border-top: 8px solid red">
+              <div
+                style="
+                  background-color: rgba(17, 24, 39, 1);
+                  color: white;
+                  padding: 1.5rem 0;
+                  text-align: center;
+                "
+              >
+                <p style="text-transform: capitalize">
+                  ${transactionDetails?.bookedRoomsOption?.map(
+                    (hotelName) => hotelName.hotelName
+                  )} hotel
+                </p>
+                <span>
+                  ${transactionDetails?.bookedRoomsOption?.map((hotelName) =>
+                    hotelName.hotelAddress.toUpperCase()
+                  )}
+                </span>
+              </div>
+              <div style="padding: 2.25rem 1.25rem 0">
+                <h3>
+                  Dear ${transactionDetails?.lastName} ${" "} ${
+        transactionDetails?.firstName
+      }
+                </h3>
+                <p>
+                  We've successfully canceled your reservation at 
+                  ${transactionDetails?.bookedRoomsOption?.map(
+                    (hotelName) => hotelName.hotelName
+                  )} hotel.
+                </p>
+                <p>
+                  Regards, <br />
+                  The WillTrip Team
+                </p>
+              </div>
+              <div style="padding: 2.25rem 1.25rem">
+                <h1
+                  style="
+                    color: rgb(17 24 39 1);
+                    text-transform: uppercase;
+                    font-weight: 600;
+                    font-size: 1.5rem;
+                    text-align: center;
+                    padding-bottom: 1.5rem;
+                  "
+                >
+                  Reservation summary
+                </h1>
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    Reservation Number:
+                  </p>
+                  <span style="text-transform: capitalize; font-size: 0.875rem">
+                    ${transactionDetails?.bookingNumber}
+                  </span>
+                </div>
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+                      flex: 1;
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    last name:
+                  </p>
+                  <span
+                    style="
+                      text-transform: capitalize;
+                      font-size: 0.875rem;
+                      flex: 2;
+                    "
+                  >
+                    ${transactionDetails?.lastName}
+                  </span>
+                </div>
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+                      flex: 1;
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    first name:
+                  </p>
+                  <span
+                    style="
+                      text-transform: capitalize;
+                      font-size: 0.875rem;
+                      flex: 2;
+                    "
+                  >
+                    ${transactionDetails?.firstName}
+                  </span>
+                </div>
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+                      flex: 1;
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    arrival date:
+                  </p>
+                  <span
+                    style="
+                      text-transform: capitalize;
+                      font-size: 0.875rem;
+                      flex: 2;
+                    "
+                  >
+                    ${transactionDetails?.arrivalTime}
+                  </span>
+                </div>
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+                      flex: 1;
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    check out time:
+                  </p>
+                  <span
+                    style="
+                      text-transform: capitalize;
+                      font-size: 0.875rem;
+                      flex: 2;
+                    "
+                  >
+                    12:00:00
+                  </span>
+                </div>
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+                      flex: 1;
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    total amount:
+                  </p>
+                  <span
+                    style="
+                      text-transform: capitalize;
+                      font-size: 0.875rem;
+                      flex: 2;
+                    "
+                  >
+                    0.00
+                  </span>
+                </div>
+                <div
+                  style="
+                    justify-content: center;
+                    align-items: center;
+                    padding-bottom: 0.5rem;
+                  "
+                >
+                  <p
+                    style="
+                      font-weight: 600;
+                      text-transform: capitalize;
+                      flex: 1;
+                      font-size: 1rem;
+                      line-height: 1.5rem;
+                    "
+                  >
+                    booking status:
+                  </p>
+                  <span
+                    style="
+                      text-transform: capitalize;
+                      font-size: 0.875rem;
+                      flex: 2;
+                    "
+                  >
+                    ${transactionDetails?.status}
+                  </span>
+                </div>
+              </div>
+            </main>
+          </div>
+        </div>
+      </section>
+    </div>`,
+    };
+    transporter.sendMail(message);
+    return res.status(200).json({
+      status: "success",
+      msg: "Your reservation has been cancelled succesfully",
+    });
+  } catch (error) {
+    return next(createError(400, "Cannot cancel this transaction"));
+  }
+};
+
+export const getBookings = async (req, res, next) => {
+  let queryObject = { bookingNumber: { $exists: true } };
+  const { bookingNumber } = req.query;
+
+  if (bookingNumber) {
+    queryObject.bookingNumber = { $regex: `^${bookingNumber}$`, $options: "i" };
+  }
+
+  let totalCount = await Transactions.countDocuments(queryObject);
+
+  let result = Transactions.find(queryObject);
+
+  const page = Number(req.query.page) || 1;
+  const limit = 20;
+  const skip = (page - 1) * limit;
+
+  result = result.skip(skip).limit(limit);
+
+  try {
+    const transactions = await result.find(queryObject);
+    return res.status(200).json({
+      success: true,
+      status: "success",
+      data: transactions,
+      total: totalCount,
       per_page: limit,
     });
   } catch (error) {
