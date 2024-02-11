@@ -13,8 +13,7 @@ cloudinaryV2.config({
 export const storage = new CloudinaryStorage({
   cloudinary: cloudinaryV2,
   params: {
-    // folder: "rooms",
-    folder: "linqswiftProfilePhotosFolder",
+    folder: "rooms",
     allowed_formats: ["jpg", "png", "jpeg"],
     transformation: [{ width: 500, height: 500, crop: "limit" }],
   },
