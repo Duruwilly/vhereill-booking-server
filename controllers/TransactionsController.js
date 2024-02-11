@@ -50,7 +50,6 @@ export const paymentTransactions = async (req, res, next) => {
 
     return res.json({ response });
   } catch (error) {
-    console.error(error);
     return next(error);
   }
 };
@@ -83,7 +82,7 @@ export const paymentCallback = async (req, res) => {
             $set: {
               status: "successful",
               transaction_id,
-              bookingNumber: bookingNumber,
+              bookingNumber,
             },
           },
           //

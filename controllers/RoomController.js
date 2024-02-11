@@ -9,7 +9,6 @@ export const createRoom = async (req, res, next) => {
 
   try {
     const savedRoom = await newRoom.save();
-
     try {
       const photoUrls = [];
       for (let i = 0; i < req.files.length; i++) {
