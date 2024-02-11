@@ -1,8 +1,8 @@
 import dotenv from "dotenv";
-dotenv.config();
 import multer from "multer";
 import { v2 as cloudinaryV2 } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
+dotenv.config();
 
 cloudinaryV2.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -13,7 +13,8 @@ cloudinaryV2.config({
 export const storage = new CloudinaryStorage({
   cloudinary: cloudinaryV2,
   params: {
-    folder: "rooms",
+    // folder: "rooms",
+    folder: "linqswiftProfilePhotosFolder",
     allowed_formats: ["jpg", "png", "jpeg"],
     transformation: [{ width: 500, height: 500, crop: "limit" }],
   },
